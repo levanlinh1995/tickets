@@ -1,0 +1,196 @@
+version: '3'
+services:
+    auth-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-81}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './auth:/var/www/html'
+        networks:
+            - ticket-network
+        depends_on:
+            - auth-mysql
+    client-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-82}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './client:/var/www/html'
+        networks:
+            - ticket-network
+    expiration-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-83}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './expiration:/var/www/html'
+        networks:
+            - ticket-network
+    order-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-84}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './order:/var/www/html'
+        networks:
+            - ticket-network
+    payment-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-85}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './payment:/var/www/html'
+        networks:
+            - ticket-network
+    ticket-service:
+        build:
+            context: ./docker/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '1000'
+        image: sail-8.1/app
+        ports:
+            - '${APP_PORT:-86}:80'
+        environment:
+            WWWUSER: '1000'
+        volumes:
+            - './ticket:/var/www/html'
+        networks:
+            - ticket-network
+    auth-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3307}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    client-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3308}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    expiration-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3309}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    order-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3310}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    payment-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3311}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    ticket-mysql:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_DB_PORT:-3312}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '12345678'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: 'robert'
+            MYSQL_USER: 'robert'
+            MYSQL_PASSWORD: '12345678'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        networks:
+            - ticket-network
+    nats-streaming:
+        build:
+            context: ./docker/8.1/mysql
+            dockerfile: Dockerfile
+        ports:
+            - '4223:4223'
+            - '8223:8223'
+        networks:
+            - ticket-network
+networks:
+    ticket-network:
+        driver: bridge
