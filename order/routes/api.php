@@ -25,6 +25,5 @@ Route::group([
     'prefix' => 'order'
 ], function () {
     Route::post('create', [OrderController::class, 'create']);
-    Route::post('ticket/create', [TicketController::class, 'create']);
 
 });

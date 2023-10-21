@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Ticket;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTicketRequest extends FormRequest
+class CreatePaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,13 @@ class CreateTicketRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'order_id' => [
+                'required',
+                'integer'
+            ],
+            'stripe_id' => [
                 'required',
                 'string'
-            ],
-            'price' => [
-                'required',
             ]
         ];
     }
