@@ -26,4 +26,7 @@ Route::group([
 ], function () {
     Route::post('create', [OrderController::class, 'create']);
 
+    // ticket list
+    Route::get('tickets', [TicketController::class, 'index']);
+
 });

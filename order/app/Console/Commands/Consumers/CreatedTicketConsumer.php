@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Consumers;
 
+use App\Models\Ticket;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Junges\Kafka\Contracts\KafkaConsumerMessage;
@@ -17,14 +18,17 @@ class CreatedTicketConsumer extends Command
     {
         $consumerService->consume('created-ticket', 'created-ticket-group', function(KafkaConsumerMessage $message) {
             $body = $message->getBody();
-            $data = $body['data'];
+            $data = json_decode($body['data']);
 
-            // todo
+            $ticket = Ticket::create([
+                'ticket_id' => $data->id,
+                'name' => $data->name,
+                'price' => $data->price,
+                'status' => $data->status,
+                'version' => $data->version
+            ]);
 
-
-
-
-            Log::info($data);
+            Log::info($ticket->toJson());
         });
     }
 }
