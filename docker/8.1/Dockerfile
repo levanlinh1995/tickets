@@ -41,7 +41,13 @@ RUN apt-get update \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \
     && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+
+RUN apt-get update \
+    && apt-get install php-pear \
+    && apt-get install -y librdkafka-dev \
+    && pecl install rdkafka
+RUN echo "extension=rdkafka.so" >> /etc/php/8.1/cli/conf.d/30-rdkafka.ini
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 

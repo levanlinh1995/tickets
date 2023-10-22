@@ -182,52 +182,45 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         networks:
             - ticket-network
-    # nats-streaming:
-    #     image: nats-streaming:0.17.0
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        ports:
+            - 2181:2181
+        networks:
+            - ticket-network
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            CONFLUENT_METRICS_ENABLE: 'false'
+            KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+        ports:
+            - 29092:29092
+        depends_on: 
+            - zookeeper
+        networks:
+            - ticket-network
+    # kafka-manager:
+    #     image: hlebalbau/kafka-manager:latest
+    #     platform: linux/amd64
+    #     container_name: kafka-manager
+    #     depends_on:
+    #         - kafka
     #     ports:
-    #         - '4222:4222'
-    #         - '8222:8222'
-    #     volumes:
-    #         - './key:/key'
-    #     command:
-    #         - "--cluster"
-    #         - "nats://0.0.0.0:6222"
-    #         - "--cluster_id"
-    #         - nats-streaming
-    #         - "--clustered"
-    #         - "--cluster_bootstrap"
-    #         - "--cluster_log_path"
-    #         - /data/log
-    #         - "--cluster_node_id"
-    #         - nats-streaming-1
-    #         - "--cluster_raft_logging"
-    #         - "--debug"
-    #         - "--dir"
-    #         - /data/msg
-    #         - "--http_port"
-    #         - "8222"
-    #         - "--port"
-    #         - "4222"
-    #         - "--store"
-    #         - file
-    #         - "--stan_debug"
-    #         - "--hb_interval"
-    #         - 2s
-    #         - "--hb_fail_count"
-    #         - "1"
-    #         - "--hb_timeout"
-    #         - 5s
-    #         # - "--user"
-    #         # - nats
-    #         # - "--pass"
-    #         # - nats
-    #         # - "--auth"
-    #         # - "12345678"
-    #         # - "--tls=false"
-    #         # - "--tlscert"
-    #         # - /key/test/key.pem
-    #         # - "--tlskey"
-    #         # - /key/test/key.key
+    #         - "9000:9000"
+    #     environment:
+    #         - ZK_HOSTS=zookeeper:2181
+    #         - APPLICATION_SECRET=letmein
     #     networks:
     #         - ticket-network
 networks:

@@ -28,5 +28,4 @@ Route::group([
     Route::post('create', [TicketController::class, 'create']);
     Route::put('update/{ticket}', [TicketController::class, 'update']);
     Route::delete('delete/{ticket}', [TicketController::class, 'delete']);
-
 });

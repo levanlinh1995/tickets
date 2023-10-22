@@ -6,39 +6,11 @@ use App\Http\Requests\CreateTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Models\Ticket;
 use App\Enums\TicketStatusEnum;
+use App\Services\ProducerService;
 
 class TicketController extends Controller
 {
-    public function testNat()
-    {
-        $opts = new \NatsStreaming\ConnectionOptions([
-            'natsOptions' => new \Nats\ConnectionOptions([
-                'user' => 'nats',
-                'pass' => 'nats',
-                'token' => '12345678',
-            ])
-        ]);
-
-        $opts->setClientID("test");
-        $opts->setClusterID("test-cluster");
-        
-        $c = new \NatsStreaming\Connection($opts);
-
-        $c->connect();
-
-        // Publish
-        $r = $c->publish('special.subject', 'some serialized payload...');
-
-        // optionally wait for the ack
-        $gotAck = $r->wait();
-        if (!$gotAck) {
-            
-        }
-
-        $c->close();
-    }
-
-    public function create(CreateTicketRequest $request)
+    public function create(CreateTicketRequest $request, ProducerService $producerService)
     {
         $data = $request->all();
 
@@ -47,6 +19,8 @@ class TicketController extends Controller
             'price' => $data['price'],
             'status' => TicketStatusEnum::ACTIVE->value
         ]);
+        
+        $producerService->pub('linh1', 'le van linh');
 
         return response([
             'status' => 201,
