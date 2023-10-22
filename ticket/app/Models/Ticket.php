@@ -12,6 +12,7 @@ class Ticket extends Model
     protected $fillable = [
         'name',
         'price',
-        'status'
+        'status',
+        'version',
     ];
 }

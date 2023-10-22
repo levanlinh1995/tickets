@@ -17,10 +17,11 @@ class TicketController extends Controller
         $ticket = Ticket::create([
             'name' => $data['name'],
             'price' => $data['price'],
-            'status' => TicketStatusEnum::ACTIVE->value
+            'status' => TicketStatusEnum::ACTIVE->value,
+            'version' => 0,
         ]);
         
-        $producerService->pub('linh1', 'le van linh');
+        $producerService->pub('created-ticket', $ticket->toJson());
 
         return response([
             'status' => 201,
