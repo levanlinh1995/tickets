@@ -10,6 +10,14 @@ use App\Services\ProducerService;
 
 class TicketController extends Controller
 {
+    public function index()
+    {
+        return response([
+            'status' => 200,
+            'data'=> Ticket::all(),
+        ], 200);
+    }
+
     public function create(CreateTicketRequest $request, ProducerService $producerService)
     {
         $data = $request->all();

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->tinyInteger('status');
             $table->decimal('price', 10, 2);
-            $table->bigIncrements('version');
+            $table->bigInteger('version');
             $table->timestamps();
         });
     }

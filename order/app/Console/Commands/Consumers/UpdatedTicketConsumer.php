@@ -22,13 +22,13 @@ class UpdatedTicketConsumer extends Command
 
             $ticketId = $data->id;
 
-            $ticket = Ticket::find($ticketId);
+            $ticket = Ticket::where('ticket_id', $ticketId)->first();
 
             if (!$ticket) {
                 Log::error('Bad request: Ticket id not found ' . $ticketId);
             } else {
                 if ($data->version - 1 === $ticket->version) {
-                    $ticket = $ticket->update([
+                    $ticket->update([
                         'name' => $data->name,
                         'price' => $data->price,
                         'status' => $data->status,
