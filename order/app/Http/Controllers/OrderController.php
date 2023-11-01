@@ -6,14 +6,15 @@ use App\Http\Requests\Order\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\Ticket;
 use App\Enums\OrderStatusEnum;
+use App\Services\ProducerService;
 
 class OrderController extends Controller
 {
-    public function create(CreateOrderRequest $request)
+    public function create(CreateOrderRequest $request, ProducerService $producerService)
     {
         $data = $request->all();
 
-        $ticket = Ticket::find($data['ticket_id']);
+        $ticket = Ticket::where('ticket_id', $data['ticket_id'])->first();
         if (!$ticket) {
             return response([
                 'status' => 400,
@@ -26,6 +27,8 @@ class OrderController extends Controller
             'amount' => $data['amount'],
             'status' => OrderStatusEnum::PROCESSING->value,
         ]);
+
+        $producerService->pub('created-order', $order->toJson());
 
         return response([
             'status' => 201,

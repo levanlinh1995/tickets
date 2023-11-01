@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigInteger('order_id');
             $table->tinyInteger('status');
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
     }

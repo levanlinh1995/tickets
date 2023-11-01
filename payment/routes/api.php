@@ -25,4 +25,5 @@ Route::group([
     'prefix' => 'payment'
 ], function () {
     Route::post('/create', [PaymentController::class, 'create']);
+    Route::post('/order/list', [OrderController::class, 'index']);
 });
