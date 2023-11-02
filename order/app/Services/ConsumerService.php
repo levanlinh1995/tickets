@@ -11,7 +11,7 @@ class ConsumerService
             ->subscribe($topic)
             ->withConsumerGroupId($groupId)
             ->withOptions([
-                'allow.auto.create.topics' => true
+                'allow.auto.create.topics' => true,
             ])
             ->withAutoCommit()
             ->withHandler($handler)

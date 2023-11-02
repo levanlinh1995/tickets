@@ -10,7 +10,7 @@ class ProducerService
     {
         $producer = Kafka::publishOn($topic)
             ->withDebugEnabled() // To enable debug mode
-            ->withConfigOptions($configOptions)
+            ->withConfigOptions(array_merge($configOptions, ['allow.auto.create.topics' => true]))
             ->withBodyKey('data', $message);
 
         $producer->send();
