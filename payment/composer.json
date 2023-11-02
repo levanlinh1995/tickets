@@ -10,7 +10,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "mateusjunges/laravel-kafka": "1.12.3"
+        "mateusjunges/laravel-kafka": "1.12.3",
+        "stripe/stripe-php": "^13.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

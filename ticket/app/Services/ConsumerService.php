@@ -10,6 +10,9 @@ class ConsumerService
         $consumer = Kafka::createConsumer()
             ->subscribe($topic)
             ->withConsumerGroupId($groupId)
+            ->withOptions([
+                'allow.auto.create.topics' => true
+            ])
             ->withAutoCommit()
             ->withHandler($handler)
             ->build();

@@ -28,7 +28,7 @@ class CreatePaymentRequest extends FormRequest
                 'required',
                 'integer'
             ],
-            'stripe_id' => [
+            'stripe_token' => [
                 'required',
                 'string'
             ]

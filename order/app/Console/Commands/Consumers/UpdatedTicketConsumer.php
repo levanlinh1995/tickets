@@ -26,6 +26,7 @@ class UpdatedTicketConsumer extends Command
 
             if (!$ticket) {
                 Log::error('Bad request: Ticket id not found ' . $ticketId);
+                return;
             } else {
                 if ($data->version - 1 === $ticket->version) {
                     $ticket->update([
