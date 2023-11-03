@@ -7,6 +7,7 @@ services:
             args:
                 WWWGROUP: '1000'
         image: sail-8.1/app
+        restart: always
         ports:
             - '${APP_PORT:-81}:80'
         environment:
@@ -25,6 +26,7 @@ services:
             args:
                 WWWGROUP: '1000'
         image: sail-8.1/app
+        restart: always
         ports:
             - '${APP_PORT:-83}:80'
         environment:
@@ -43,6 +45,7 @@ services:
             args:
                 WWWGROUP: '1000'
         image: sail-8.1/app
+        restart: always
         ports:
             - '${APP_PORT:-84}:80'
         environment:
@@ -61,6 +64,7 @@ services:
             args:
                 WWWGROUP: '1000'
         image: sail-8.1/app
+        restart: always
         ports:
             - '${APP_PORT:-85}:80'
         environment:
@@ -79,6 +83,7 @@ services:
             args:
                 WWWGROUP: '1000'
         image: sail-8.1/app
+        restart: always
         ports:
             - '${APP_PORT:-86}:80'
         environment:
@@ -94,6 +99,7 @@ services:
         build:
             context: ./auth/docker/8.1/mysql
             dockerfile: Dockerfile
+        restart: always
         ports:
             - '${FORWARD_DB_PORT:-3307}:3306'
         environment:
@@ -111,6 +117,7 @@ services:
         build:
             context: ./expiration/docker/8.1/mysql
             dockerfile: Dockerfile
+        restart: always
         ports:
             - '${FORWARD_DB_PORT:-3309}:3306'
         environment:
@@ -128,6 +135,7 @@ services:
         build:
             context: ./order/docker/8.1/mysql
             dockerfile: Dockerfile
+        restart: always
         ports:
             - '${FORWARD_DB_PORT:-3310}:3306'
         environment:
@@ -145,6 +153,7 @@ services:
         build:
             context: ./payment/docker/8.1/mysql
             dockerfile: Dockerfile
+        restart: always
         ports:
             - '${FORWARD_DB_PORT:-3311}:3306'
         environment:
@@ -164,6 +173,7 @@ services:
             dockerfile: Dockerfile
         ports:
             - '${FORWARD_DB_PORT:-3312}:3306'
+        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: '12345678'
             MYSQL_ROOT_HOST: '%'
@@ -185,7 +195,7 @@ services:
         networks:
             - ticket-network
     kafka:
-        image: confluentinc/cp-kafka:latest
+        image: confluentinc/cp-kafka:7.0.11
         restart: always
         environment:
             KAFKA_BROKER_ID: 1
