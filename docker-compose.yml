@@ -210,6 +210,13 @@ services:
             CONFLUENT_METRICS_ENABLE: 'false'
             KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
             KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+        command: sh -c "((sleep 15 && \
+            kafka-topics --create --topic created-order --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 && \
+            kafka-topics --create --topic updated-order --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 && \
+            kafka-topics --create --topic completed-order --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 && \
+            kafka-topics --create --topic created-payment --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 && \
+            kafka-topics --create --topic updated-ticket --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1 && \
+            kafka-topics --create --topic created-ticket --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1)&) && /etc/confluent/docker/run ">
         ports:
             - 29092:29092
         depends_on: 
@@ -217,7 +224,7 @@ services:
         networks:
             - ticket-network
 
-        # exam: docker compose exec kafka kafka-topics --create --topic myTopic --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
+        # exam: docker compose exec kafka kafka-topics --create --topic myTopic_02 --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
         # docker compose exec kafka kafka-console-consumer --from-beginning --bootstrap-server localhost:29092 --topic myTopic --timeout-ms 15000
 networks:
     ticket-network:
