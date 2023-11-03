@@ -219,20 +219,6 @@ services:
 
         # exam: docker compose exec kafka kafka-topics --create --topic myTopic --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
         # docker compose exec kafka kafka-console-consumer --from-beginning --bootstrap-server localhost:29092 --topic myTopic --timeout-ms 15000
-
-    # kafka-manager:
-    #     image: hlebalbau/kafka-manager:latest
-    #     platform: linux/amd64
-    #     container_name: kafka-manager
-    #     depends_on:
-    #         - kafka
-    #     ports:
-    #         - "9000:9000"
-    #     environment:
-    #         - ZK_HOSTS=zookeeper:2181
-    #         - APPLICATION_SECRET=letmein
-    #     networks:
-    #         - ticket-network
 networks:
     ticket-network:
         driver: bridge
