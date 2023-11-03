@@ -28,7 +28,7 @@ class UpdatedTicketConsumer extends Command
                 Log::error('Bad request: Ticket id not found ' . $ticketId);
                 return;
             } else {
-                if ($data->version - 1 === $ticket->version) {
+                // if ($data->version - 1 === $ticket->version) {
                     $ticket->update([
                         'name' => $data->name,
                         'price' => $data->price,
@@ -37,9 +37,9 @@ class UpdatedTicketConsumer extends Command
                     ]);
         
                     Log::info($ticket->toJson());
-                } else {
-                    Log::error('Please wait in the order of queue');
-                }
+                // } else {
+                //     Log::error('Please wait in the order of queue');
+                // }
             }
         });
     }
