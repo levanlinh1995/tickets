@@ -196,7 +196,7 @@ services:
             - ticket-network
 
     kafka:
-        image: confluentinc/cp-kafka:7.0.11
+        image: confluentinc/cp-kafka
         restart: always
         environment:
             KAFKA_BROKER_ID: 1
