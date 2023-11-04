@@ -1,5 +1,15 @@
 version: '3'
 services:
+    client:
+        image: node:18-alpine
+        volumes:
+            - ./client:/app
+        working_dir: /app
+        tty: true
+        stdin_open: true
+        command: ["npm", "run", "dev","--", "--host", "0.0.0.0"]
+        ports:
+            - "8000:5173"
     auth-service:
         build:
             context: ./auth/docker/8.1
