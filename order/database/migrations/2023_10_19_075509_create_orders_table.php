@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('ticket_id');
             $table->decimal('amount', 10, 2);
             $table->tinyInteger('status');
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }

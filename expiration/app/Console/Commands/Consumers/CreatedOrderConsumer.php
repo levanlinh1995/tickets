@@ -22,7 +22,7 @@ class CreatedOrderConsumer extends Command
 
             $orderId = $data->id;
 
-            ExpiredOrderJob::dispatch($orderId)->delay(10);
+            ExpiredOrderJob::dispatch($orderId)->delay(60);
 
             Log::info('job executed: orderId = ' . $orderId);
         });

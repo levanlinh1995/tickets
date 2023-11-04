@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Ticket;
 use App\Enums\OrderStatusEnum;
 use App\Services\ProducerService;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -26,6 +27,7 @@ class OrderController extends Controller
             'ticket_id' => $data['ticket_id'],
             'amount' => $data['amount'],
             'status' => OrderStatusEnum::PROCESSING->value,
+            'expired_at' => Carbon::now()->addMinutes(1)
         ]);
 
         $producerService->pub('created-order', $order->toJson());

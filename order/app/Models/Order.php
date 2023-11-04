@@ -13,5 +13,6 @@ class Order extends Model
         'ticket_id',
         'amount',
         'status',
+        'expired_at',
     ];
 }
