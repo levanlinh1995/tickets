@@ -23,7 +23,7 @@ class CreatedOrderConsumer extends Command
     {
         $this->producerService = $producerService;
 
-        $consumerService->consume('created-order', 'created-order-group', function(KafkaConsumerMessage $message) {
+        $consumerService->consume('created-order', 'created-order-group-ticket', function(KafkaConsumerMessage $message) {
             $body = $message->getBody();
             $data = json_decode($body['data']);
 

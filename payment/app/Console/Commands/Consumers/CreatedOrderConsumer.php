@@ -16,7 +16,7 @@ class CreatedOrderConsumer extends Command
 
     public function handle(ConsumerService $consumerService)
     {
-        $consumerService->consume('created-order', 'created-order-group', function(KafkaConsumerMessage $message) {
+        $consumerService->consume('created-order', 'created-order-group-payment', function(KafkaConsumerMessage $message) {
             $body = $message->getBody();
             $data = json_decode($body['data']);
 
