@@ -37,7 +37,7 @@ services:
             - ticket-network
         depends_on:
             - kafka
-            - expiration-mysql
+            - redis
     order-service:
         build:
             context: ./order/docker/8.1
@@ -113,24 +113,6 @@ services:
             - ticket-network
         volumes:
             - auth-mysql-volume:/var/lib/mysql
-    expiration-mysql:
-        build:
-            context: ./expiration/docker/8.1/mysql
-            dockerfile: Dockerfile
-        restart: always
-        ports:
-            - '${FORWARD_DB_PORT:-3309}:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: '12345678'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: 'robert'
-            MYSQL_USER: 'robert'
-            MYSQL_PASSWORD: '12345678'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
-        networks:
-            - ticket-network
-        volumes:
-            - expiration-mysql-volume:/var/lib/mysql
     order-mysql:
         build:
             context: ./order/docker/8.1/mysql
@@ -226,6 +208,16 @@ services:
 
         # exam: docker compose exec kafka kafka-topics --create --topic myTopic_02 --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
         # docker compose exec kafka kafka-console-consumer --from-beginning --bootstrap-server localhost:29092 --topic myTopic --timeout-ms 15000
+
+    redis:
+        image: 'bitnami/redis:latest'
+        restart: always
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        volumes:
+          - redis-volume:/bitnami/redis/data
+        networks:
+            - ticket-network
 networks:
     ticket-network:
         driver: bridge
@@ -233,5 +225,5 @@ volumes:
   ticket-mysql-volume:
   order-mysql-volume:
   payment-mysql-volume:
-  expiration-mysql-volume:
   auth-mysql-volume:
+  redis-volume:
