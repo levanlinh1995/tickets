@@ -18,6 +18,14 @@ class TicketController extends Controller
         ], 200);
     }
 
+    public function show(Ticket $ticket)
+    {
+        return response([
+            'status' => 200,
+            'data'=> $ticket,
+        ], 200);
+    }
+
     public function create(CreateTicketRequest $request, ProducerService $producerService)
     {
         $data = $request->all();

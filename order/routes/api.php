@@ -25,6 +25,7 @@ Route::group([
     'prefix' => 'order'
 ], function () {
     Route::post('create', [OrderController::class, 'create']);
+    Route::get('{order}/detail', [OrderController::class, 'show']);
 
     // ticket list
     Route::get('tickets', [TicketController::class, 'index']);

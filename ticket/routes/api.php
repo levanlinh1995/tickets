@@ -23,7 +23,8 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'ticket'
 ], function () {
-    Route::post('list', [TicketController::class, 'index']);
+    Route::get('list', [TicketController::class, 'index']);
+    Route::get('{ticket}/detail', [TicketController::class, 'show']);
     Route::post('create', [TicketController::class, 'create']);
     Route::put('update/{ticket}', [TicketController::class, 'update']);
     Route::delete('delete/{ticket}', [TicketController::class, 'delete']);

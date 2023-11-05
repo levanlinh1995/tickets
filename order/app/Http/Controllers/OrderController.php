@@ -11,6 +11,14 @@ use Carbon\Carbon;
 
 class OrderController extends Controller
 {
+    public function show(Order $order)
+    {
+        return response([
+            'status' => 200,
+            'data' => $order
+        ], 200);
+    }
+
     public function create(CreateOrderRequest $request, ProducerService $producerService)
     {
         $data = $request->all();
