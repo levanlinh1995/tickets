@@ -16,7 +16,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '1000'
-        image: sail-8.1/app
+        image: auth-service-image
         restart: always
         ports:
             - '${APP_PORT:-81}:80'
@@ -35,7 +35,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '1000'
-        image: sail-8.1/app
+        image: expiration-service-image
         restart: always
         ports:
             - '${APP_PORT:-83}:80'
@@ -54,7 +54,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '1000'
-        image: sail-8.1/app
+        image: order-service-image
         restart: always
         ports:
             - '${APP_PORT:-84}:80'
@@ -73,7 +73,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '1000'
-        image: sail-8.1/app
+        image: payment-service-image
         restart: always
         ports:
             - '${APP_PORT:-85}:80'
@@ -92,7 +92,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '1000'
-        image: sail-8.1/app
+        image: ticket-service-image
         restart: always
         ports:
             - '${APP_PORT:-86}:80'
@@ -109,6 +109,7 @@ services:
         build:
             context: ./auth/docker/8.1/mysql
             dockerfile: Dockerfile
+        image: auth-mysql-image
         restart: always
         ports:
             - '${FORWARD_DB_PORT:-3307}:3306'
@@ -127,6 +128,7 @@ services:
         build:
             context: ./order/docker/8.1/mysql
             dockerfile: Dockerfile
+        image: order-mysql-image
         restart: always
         ports:
             - '${FORWARD_DB_PORT:-3310}:3306'
@@ -145,6 +147,7 @@ services:
         build:
             context: ./payment/docker/8.1/mysql
             dockerfile: Dockerfile
+        image: payment-mysql-image
         restart: always
         ports:
             - '${FORWARD_DB_PORT:-3311}:3306'
@@ -163,6 +166,7 @@ services:
         build:
             context: ./ticket/docker/8.1/mysql
             dockerfile: Dockerfile
+        image: ticket-mysql-image
         ports:
             - '${FORWARD_DB_PORT:-3312}:3306'
         restart: always
