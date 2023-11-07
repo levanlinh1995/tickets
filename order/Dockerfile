@@ -54,11 +54,13 @@ RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
-COPY start-container-payment /usr/local/bin/start-container-payment
+COPY . /var/www/html/
+
+COPY start-container-order /usr/local/bin/start-container-order
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
-RUN chmod +x /usr/local/bin/start-container-payment
+RUN chmod +x /usr/local/bin/start-container-order
 
 EXPOSE 8000
 
-ENTRYPOINT ["start-container-payment"]
+ENTRYPOINT ["start-container-order"]
