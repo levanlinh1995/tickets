@@ -98,8 +98,8 @@ services:
             - '${APP_PORT:-86}:80'
         environment:
             WWWUSER: '1000'
-        # volumes:
-        #     - './ticket:/var/www/html'
+        volumes:
+            - './ticket:/var/www/html'
         networks:
             - ticket-network
         depends_on:
