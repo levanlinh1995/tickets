@@ -8,6 +8,10 @@ if [ ! -d /.composer ]; then
     mkdir /.composer
 fi
 
+composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+php artisan migrate --force
+
 chmod -R ugo+rw /.composer
 
 if [ $# -gt 0 ]; then

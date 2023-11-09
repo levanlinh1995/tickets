@@ -22,13 +22,13 @@ services:
             - '${APP_PORT:-81}:80'
         environment:
             WWWUSER: '1000'
-        volumes:
-            - './auth:/var/www/html'
+        depends_on:
+            - auth-mysql
+            - kafka
+        # volumes:
+        #     - './auth:/var/www/html'
         networks:
             - ticket-network
-        depends_on:
-            - kafka
-            - auth-mysql
     expiration-service:
         build:
             context: ./expiration
@@ -41,8 +41,8 @@ services:
             - '${APP_PORT:-83}:80'
         environment:
             WWWUSER: '1000'
-        volumes:
-            - './expiration:/var/www/html'
+        # volumes:
+        #     - './expiration:/var/www/html'
         networks:
             - ticket-network
         depends_on:
@@ -60,8 +60,8 @@ services:
             - '${APP_PORT:-84}:80'
         environment:
             WWWUSER: '1000'
-        volumes:
-            - './order:/var/www/html'
+        # volumes:
+        #     - './order:/var/www/html'
         networks:
             - ticket-network
         depends_on:
@@ -79,8 +79,8 @@ services:
             - '${APP_PORT:-85}:80'
         environment:
             WWWUSER: '1000'
-        volumes:
-            - './payment:/var/www/html'
+        # volumes:
+        #     - './payment:/var/www/html'
         networks:
             - ticket-network
         depends_on:
@@ -98,8 +98,8 @@ services:
             - '${APP_PORT:-86}:80'
         environment:
             WWWUSER: '1000'
-        volumes:
-            - './ticket:/var/www/html'
+        # volumes:
+        #     - './ticket:/var/www/html'
         networks:
             - ticket-network
         depends_on:
@@ -169,6 +169,14 @@ services:
             - ticket-network
         volumes:
             - ticket-mysql-volume:/var/lib/mysql
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
         environment:
@@ -207,6 +215,12 @@ services:
             - zookeeper
         networks:
             - ticket-network
+        healthcheck:
+            test: nc -z localhost 9092 || exit -1
+            start_period: 15s
+            interval: 5s
+            timeout: 10s
+            retries: 10
 
         # exam: docker compose exec kafka kafka-topics --create --topic myTopic_02 --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
         # docker compose exec kafka kafka-console-consumer --from-beginning --bootstrap-server localhost:29092 --topic myTopic --timeout-ms 15000
