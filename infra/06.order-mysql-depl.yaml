@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-mysql-depl
+spec:
+  selector:
+    matchLabels:
+      app: order-mysql
+  template:
+    metadata:
+      labels:
+        app: order-mysql
+    spec:
+      containers:
+      - name: order-mysql
+        image: mysql/mysql-server:8.0
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: '12345678'
+        - name: MYSQL_ROOT_HOST
+          value: '%'
+        - name: MYSQL_DATABASE
+          value: 'robert'
+        - name: MYSQL_USER
+          value: 'robert'
+        - name: MYSQL_PASSWORD
+          value: '12345678'
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: '1'
+        volumeMounts:
+        - name: order-mysql-data
+          mountPath: /var/lib/mysql
+      restartPolicy: Always
+      volumes:
+      - name: order-mysql-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-mysql-sv
+spec:
+  selector:
+    app: order-mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+

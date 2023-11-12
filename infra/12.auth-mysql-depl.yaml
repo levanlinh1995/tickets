@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-mysql-depl
+spec:
+  selector:
+    matchLabels:
+      app: auth-mysql
+  template:
+    metadata:
+      labels:
+        app: auth-mysql
+    spec:
+      containers:
+      - name: auth-mysql
+        image: mysql/mysql-server:8.0
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: '12345678'
+        - name: MYSQL_ROOT_HOST
+          value: '%'
+        - name: MYSQL_DATABASE
+          value: 'robert'
+        - name: MYSQL_USER
+          value: 'robert'
+        - name: MYSQL_PASSWORD
+          value: '12345678'
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: '1'
+        volumeMounts:
+        - name: auth-mysql-data
+          mountPath: /var/lib/mysql
+      restartPolicy: Always
+      volumes:
+      - name: auth-mysql-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-mysql-sv
+spec:
+  selector:
+    app: auth-mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
